@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi App de Ahorro</title>
+
+    <!-- Manifest para la PWA -->
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Metaetiquetas para que se vea bien en móviles -->
+    <meta name="theme-color" content="#2196F3">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Ahorro App</h1>
+        </header>
+
+        <main>
+            <section id="ahorro-actual">
+                <div class="section-header">
+                    <i class="fas fa-piggy-bank"></i>
+                    <h2>Ahorro Actual</h2>
+                </div>
+                <p id="monto-ahorrado">$0</p>
+            </section>
+
+            <section id="meta">
+                <div class="section-header">
+                    <i class="fas fa-bullseye"></i>
+                    <h2>Meta de Ahorro</h2>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="meta-input" placeholder="Ingrese su meta">
+                </div>
+                <div class="input-group">
+                    <input type="number" id="ahorro-periodico-input" placeholder="Ahorro por período">
+                    <select id="periodo-ahorro">
+                        <option value="diario">Diario</option>
+                        <option value="semanal">Semanal</option>
+                        <option value="mensual">Mensual</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <select id="categoria-meta">
+                        <option value="general">General</option>
+                        <option value="viajes">Viajes</option>
+                        <option value="educacion">Educación</option>
+                        <option value="hogar">Hogar</option>
+                        <option value="otros">Otros</option>
+                    </select>
+                </div>
+                <button id="establecer-meta">Calcular</button>
+                <p id="meta-alcanzada">Progreso: $0 / $0</p>
+                <p id="resultado-calculo"></p>
+            </section>
+
+            <section id="lista-metas">
+                <div class="section-header">
+                    <i class="fas fa-list-ul"></i>
+                    <h2>Lista de Metas</h2>
+                </div>
+                <ul id="metas-guardadas">
+                    <!-- Aquí se mostrarán las metas guardadas -->
+                    const montoAgregar = parseFloat(prompt(`Ingrese el monto a agregar a la meta de $${metaObj.meta}:`)) || 0;
+                    metaObj.ahorro += montoAgregar; // Esto suma el monto
+                    ahorroActual += montoAgregar; // Esto suma el monto al ahorro actual
+                    
+                    // Nueva lógica para manejar números negativos
+                    if (montoAgregar < 0) {
+                        metaObj.ahorro += montoAgregar; // Resta el monto si es negativo
+                        ahorroActual += montoAgregar; // Resta el monto al ahorro actual
+                    }
+
+                </ul>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Mi App de Ahorro</p>
+        </footer>
+
+        <div id="mensajes">
+            <!-- Aquí se mostrarán los mensajes -->
+        </div>  
+
+        <!-- Botón para cambiar el tema -->
+        <button id="cambiar-tema">Cambiar a tema oscuro</button>
+
+        <!-- Botón para instalar la PWA -->
+        <button id="instalar-btn" style="display: none;">Instalar App</button>
+    </div>
+
+    <!-- Registro del Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(() => console.log('Service Worker registrado con éxito'))
+                .catch(error => console.log('Error al registrar el Service Worker', error));
+        }
+    </script>
+
+    <!-- Código para la instalación de la PWA -->
+    <script>
+        let deferredPrompt;
+        const instalarBtn = document.getElementById('instalar-btn');
+
+        window.addEventListener('beforeinstallprompt', (event) => {
+            event.preventDefault();
+            deferredPrompt = event;
+            instalarBtn.style.display = 'block';
+        });
+
+        instalarBtn.addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('El usuario instaló la PWA');
+                    } else {
+                        console.log('El usuario canceló la instalación');
+                    }
+                    deferredPrompt = null;
+                    instalarBtn.style.display = 'none';
+                });
+            }
+        });
+    </script>
+
+    <script src="script.js"></script>
+
+</body>
+</html> <main>DIFHMO</main> 
+
+
+
+
